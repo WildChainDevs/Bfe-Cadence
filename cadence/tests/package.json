@@ -1,0 +1,21 @@
+{
+  "name": "tests",
+  "version": "1.0.0",
+  "main": "deploy.test.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.14.8",
+    "@babel/preset-env": "^7.14.8",
+    "@onflow/types": "^0.0.4",
+    "babel-jest": "^27.0.6",
+    "flow-js-testing": "^0.1.13",
+    "jest": "^27.0.6",
+    "jest-environment-node": "^27.0.6"
+  },
+  "description": ""
+}
