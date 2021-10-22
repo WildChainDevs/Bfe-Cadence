@@ -1,0 +1,35 @@
+{
+	"emulators": {
+		"default": {
+			"port": 3569,
+			"serviceAccount": "emulator-account"
+		}
+	},
+	"contracts":{
+		"BfeNFT": "./contracts/BfeNFT.cdc",
+		"NFTStorefront": "./contracts/NFTStorefront.cdc",
+        "FungibleToken": "./contracts/FungibleToken.cdc",
+        "NonFungibleToken": "./contracts/NonFungibleToken.cdc",
+        "FUSD": "./contracts/FUSD.cdc"
+   },
+	"networks": {
+		"emulator": "127.0.0.1:3569",
+		"mainnet": "access.mainnet.nodes.onflow.org:9000",
+		"testnet": "access.devnet.nodes.onflow.org:9000"
+	},
+	"accounts": {
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
+			"keys": "eb4b6f767429455ee4b28f16076192b7229bf8370ba53df151e3cfe07deac1ff"
+		},
+		"test-account": {
+			"address": "a446e01659258758",
+			"keys": "44d845172df10c01fdacd55ea5269c1255ac6e5f51e3cdd08068960f142b9b41"
+		}
+	},
+	"deployments": {
+		"emulator": {
+			"emulator-account": ["FungibleToken","NonFungibleToken","FUSD","BfeNFT","NFTStorefront"]
+  		}
+	}
+}
