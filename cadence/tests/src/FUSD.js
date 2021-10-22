@@ -17,26 +17,26 @@ export const deployFUSDContract = async () => {
 
 export const createFUSDVault = async (recipient) => {
     const signers = [recipient]
-    const name = "CreateFUSDVault"
+    const name = "create_fusd_vault"
     await sendTransaction({ signers, name })
 }
 
 export const createFUSDMinter = async (admin) => {
   const signers = [admin]
-  const name = "CreateFUSDMinter"
+  const name = "create_fusd_minter"
   await sendTransaction({ signers, name })
 }
 
 export const mintFUSD = async (admin, recipient, amount) => {
   const signers = [admin]
   const args = [recipient, amount]
-  const name = "MintFUSD"
+  const name = "mint_fusd"
   await sendTransaction({ name, args, signers })
 }
 
 export const getFUSDBalance = async (account) => {
     const args = [account]
-    const balance = await executeScript({ name: "GetFUSDBalance", args })
+    const balance = await executeScript({ name: "get_fusd_balance", args })
     return balance
 }
 

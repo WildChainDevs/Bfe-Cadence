@@ -18,7 +18,7 @@ export const deployNFTStorefrontContract = async () => {
 
 export const sellBfeNFT = async (seller, nftId, price) => {
     const Seller = await getAccountAddress(seller)
-    const name = "SellBfeNFT";
+    const name = "sell_item";
 	const args = [nftId, price];
 	const signers = [Seller];
 	return sendTransaction({ name, args, signers });
@@ -26,21 +26,21 @@ export const sellBfeNFT = async (seller, nftId, price) => {
 
 export const buyBfeNFT = async (buyer, seller, nftId, price, listId) => {
     const Buyer = await getAccountAddress(buyer)
-    const name = "BuyBfeNFT";
+    const name = "buy_item";
 	const args = [seller, nftId, price,listId];
 	const signers = [Buyer];
 	return sendTransaction({ name, args, signers });
 };
 
 export const setupAccount = async( account ) => {
-    const name = "SetupAccount";
+    const name = "setup_account";
     const Acct = await getAccountAddress(account)
     const signers = [Acct];
 	return sendTransaction({ name, signers });
 };
 
 export const checkStorefront = async( account ) => {
-    const name = "CheckStorefront";
+    const name = "check_storefront";
     const args = [account]
 	return executeScript({ name, args });
 };

@@ -16,7 +16,7 @@ export const deployBfeNFTContract = async () => {
 
 export const mintBfeNFT = async (data,admin) => {
     const BfeNFTAdmin = await getAccountAddress(admin)
-    const name = "MintCustomMetadata";
+    const name = "mint_custom_metadata";
 	const args = [data];
 	const signers = [BfeNFTAdmin];
 
@@ -24,13 +24,13 @@ export const mintBfeNFT = async (data,admin) => {
 };
 
 export const getNFTIds = async (account) => {
-    const name = "GetNFTIds";
+    const name = "get_nft_ids";
 	const args = [account];
 	return executeScript({ name, args });
 };
 
 export const getNFTMeta = async (account,id) => {
-    const name = "GetNFTMetadata";
+    const name = "get_nft_metadata";
 	const args = [account,id];
 	return executeScript({ name, args });
 };
@@ -44,7 +44,7 @@ export const getNFTMeta = async (account,id) => {
 };*/
 
 export const checkCollectionReceiver = async( account ) => {
-    const name = "CheckCollectionReceiver";
+    const name = "check_collection_receiver";
     const args = [account]
 	return executeScript({ name, args });
 };
