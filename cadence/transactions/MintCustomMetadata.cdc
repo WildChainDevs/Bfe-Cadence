@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 
-import BfeNFT from 0xa446e01659258758
+import BfeNFT from "../contracts/BfeNFT.cdc"
 
 transaction(customData: {String : String}) {
     // If the person executing this tx doesn't have access to the

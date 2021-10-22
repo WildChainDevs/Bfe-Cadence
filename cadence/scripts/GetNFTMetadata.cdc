@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 
-import BfeNFT from 0xa446e01659258758
+import BfeNFT from "../contracts/BfeNFT.cdc"
 
 pub fun main(account: Address, nftId: UInt64) : {String : String} {
     let nftOwner = getAccount(account)
