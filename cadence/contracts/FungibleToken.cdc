@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: UNLICENSED
 /**
 
 # The Flow Fungible Token standard

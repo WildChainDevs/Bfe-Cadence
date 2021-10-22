@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: UNLICENSED
+
 import BfeNFT from 0xa446e01659258758
 import NFTStorefront from 0xa446e01659258758
 

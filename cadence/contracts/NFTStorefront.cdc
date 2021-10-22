@@ -1,5 +1,4 @@
-import FungibleToken from 0x9a0766d93b6608b7
-import NonFungibleToken from 0x631e88ae7f1d7c20
+// SPDX-License-Identifier: UNLICENSED
 
 // NFTStorefront
 //
@@ -21,6 +20,10 @@ import NonFungibleToken from 0x631e88ae7f1d7c20
 // Marketplaces and other aggregators can watch for Listing events
 // and list items of interest.
 //
+
+import FungibleToken from 0x9a0766d93b6608b7
+import NonFungibleToken from 0x631e88ae7f1d7c20
+
 pub contract NFTStorefront {
     // NFTStorefrontInitialized
     // This contract has been deployed.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: UNLICENSED
+
 import NFTStorefront from 0xa446e01659258758
 
 pub fun main(address: Address): Bool {
