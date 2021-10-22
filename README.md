@@ -14,7 +14,3 @@ Transactions are objects that are signed by one or more accounts and are sent to
 
 ### Scripts
 Scripts are read-only functions that can return information about resources on the Flow blockchain.
-
-### Coding in Cadence
-One thing that takes some getting used to in Cadence is syntax using a backward pointing arrow. Flow is a resource-based language. To prevent errors and minimize security risk, all resources in Flow can only exist in one place at any given time. The architecture of the Flow blockchain and Cadence work harmoniously to make that happen. While the difference in syntax takes time to learn, the resource model used by Flow is quite sophisticated and has the potential to improve experience for end-users.
-
