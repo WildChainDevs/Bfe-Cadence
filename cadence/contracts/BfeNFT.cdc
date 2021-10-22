@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: UNLICENSED
+
 import NonFungibleToken from 0x631e88ae7f1d7c20
 
 pub contract BfeNFT: NonFungibleToken {
@@ -17,9 +19,12 @@ pub contract BfeNFT: NonFungibleToken {
         // The unique ID that differentiates each NFT
         pub let id: UInt64
 
+        pub let metadata: {String : String}
+
         // Initialize fields in the init function
-        init(initID: UInt64) {
+        init(initID: UInt64, initMetadata: {String : String} ) {
             self.id = initID
+            self.metadata = initMetadata
         }
     }
 
@@ -29,19 +34,22 @@ pub contract BfeNFT: NonFungibleToken {
     // idExists, and getMetadata fields in their Collection
     pub resource interface NFTReceiver {
 
-        pub fun deposit(token: @NonFungibleToken.NFT)
-
-        pub fun depositMeta(token: @NonFungibleToken.NFT, metadata: {String : String}) 
+        pub fun deposit(token: @NonFungibleToken.NFT) 
 
         pub fun getIDs(): [UInt64]
 
         pub fun borrowNFT(id: UInt64): &NonFungibleToken.NFT
 
+        pub fun borrowBfeNFT(id: UInt64): &BfeNFT.NFT? {
+            // If the result isn't nil, the id of the returned reference
+            // should be the same as the argument to the function
+            post {
+                (result == nil) || (result?.id == id):
+                    "Cannot borrow BfeNFT reference: The ID of the returned reference is incorrect"
+            }
+        }
+
         pub fun idExists(id: UInt64): Bool
-
-        pub fun cleanMetadata()
-
-        pub fun getMetadata(id: UInt64): {String : String}
 
     }
 
@@ -54,16 +62,10 @@ pub contract BfeNFT: NonFungibleToken {
         // ownedNFTs keeps track of all NFTs a user owns 
         pub var ownedNFTs: @{UInt64: NonFungibleToken.NFT}
 
-        // metadataObjs extends Flow NFT contract functionality to 
-        // map an NFT's token id to its associated metadata--
-        // which means you need the NFT's token id before you can set this var.
-        pub var metadataObjs: {UInt64: {String : String}}
-
         // Initialize the ownedNFTs field to an empty collection (for NFTs),
         // and the metadataObjs field to an empty dictionary (for Strings)
         init () {
             self.ownedNFTs <- {}
-            self.metadataObjs = {}
         }
 
         // withdraw 
@@ -89,30 +91,9 @@ pub contract BfeNFT: NonFungibleToken {
             let id: UInt64 = token.id
 
             // add the new token to the dictionary which removes the old one
-            let oldToken <- self.ownedNFTs[id] <- token
+            self.ownedNFTs[id] <-! token
 
             emit Deposit(id: id, to: self.owner?.address)
-
-            destroy oldToken
-        }
-
-        // deposit 
-        //
-        // Function that takes an NFT and its metadata as an argument, and 
-        // adds the NFT to the collections dictionary and
-        // adds its associated metadata to the metadata dictionary.
-        // NOTE: to make sure that only the minter of the token can add
-        // metadata to the token, the addition of metadata is confined to the minting execution.
-        pub fun depositMeta(token: @NonFungibleToken.NFT, metadata: {String : String}) {
-            let newToken <- token as! @BfeNFT.NFT
-            let id: UInt64 = newToken.id
-            self.metadataObjs[id] = metadata
-            self.ownedNFTs[id] <-! newToken
-            emit Deposit(id: id, to: self.owner?.address)
-            // As opposed to this other technique,
-            // adding the new token to the dictionary which removes the old one:
-            //let oldToken <- self.ownedNFTs[token.id] <- token
-            //destroy oldToken
         }
 
          // borrowNFT
@@ -123,26 +104,13 @@ pub contract BfeNFT: NonFungibleToken {
             return &self.ownedNFTs[id] as &NonFungibleToken.NFT
         }
 
-        /*
-        pub fun updateMetadata(id: UInt64, metadata: {String: String}) {
-            self.metadataObjs[id] = metadata
-        }
-
-        pub fun removeMetadata(k: UInt64): {String : String}? {
-            return self.metadataObjs.remove(key: k)
-        }
-        */
-
-        pub fun cleanMetadata(){
-            for k in self.metadataObjs.keys {
-                if !self.idExists(id: k){
-                    self.metadataObjs.remove(key: k)
-                }
+        pub fun borrowBfeNFT(id: UInt64): &BfeNFT.NFT? {
+            if self.ownedNFTs[id] != nil {
+                let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
+                return ref as! &BfeNFT.NFT
+            } else {
+                return nil
             }
-        }
-
-        pub fun getMetadata(id: UInt64): {String : String} {
-            return self.metadataObjs[id]!
         }
 
         // idExists checks to see if a NFT 
@@ -187,14 +155,14 @@ pub contract BfeNFT: NonFungibleToken {
         // Function that mints a new NFT with a new ID
         // and, instead of depositing the NFT into a specific recipient's collection storage location,
         // just returns the NFT itself!
-        pub fun mintNFT(): @NonFungibleToken.NFT {
+        pub fun mintNFT( metadata: {String : String}): @NonFungibleToken.NFT {
 
             // create a new NFT! This is where the NFT's core ID gets created.
             // Right now, it's just getting this ID from the idCount field, which
             // merely increments up with each NFT minted. If we want to create more
             // complex IDs with hashing etc., this would be the place to put that new ID
             // generated from that technique.
-            var oldNFT <- create NFT(initID: self.idCount) 
+            var oldNFT <- create NFT(initID: self.idCount, initMetadata: metadata) 
 
             let newNFT <- oldNFT as! @NonFungibleToken.NFT
 
