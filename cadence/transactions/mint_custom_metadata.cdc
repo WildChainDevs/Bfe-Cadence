@@ -24,10 +24,10 @@ transaction(customData: {String : String}) {
         let metadata : {String : String} = customData //{KeysData.slice(from: 4, upTo: KeysData.length): ValuesData.slice(from: 4, upTo: ValuesData.length)}
 
         // This is where the NFT resource itself is created
-        let newNFT <- self.minterRef.mintNFT()
+        let newNFT <- self.minterRef.mintNFT(metadata: metadata)
 
         // This is where the metadata comes into the picture to join with the new NFT!
-        self.receiverRef.depositMeta(token: <-newNFT, metadata: metadata)
+        self.receiverRef.deposit(token: <-newNFT)
 
         log("NFT has been minted and deposited to Account's Collection")
     }

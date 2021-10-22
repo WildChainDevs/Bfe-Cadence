@@ -5,7 +5,7 @@ import NFTStorefront from "../contracts/NFTStorefront.cdc"
 import FUSD from "../contracts/FUSD.cdc"
 import FungibleToken from "../contracts/FungibleToken.cdc"
 
-// This transaction uses the signer's tokens to purchase an NFT
+/ This transaction uses the signer's tokens to purchase an NFT
 // from the Sale collection of the seller account.
 transaction(sellerAcct: Address, nftID: UInt64, tokenAmount: UFix64, listId: UInt64) {
 
@@ -53,7 +53,7 @@ transaction(sellerAcct: Address, nftID: UInt64, tokenAmount: UFix64, listId: UIn
     // to your NFT collection and giving them the tokens to buy it
     let nft <- listingRef.purchase(payment: <-self.temporaryVault)
     let nftId = nft.id
-    self.collectionRef.depositMeta(token: <-nft, metadata: nftRef.getMetadata(id: nftId))
+    self.collectionRef.deposit(token: <-nft)
     storefrontRef.cleanup(listingResourceID: listId)
   }
 }

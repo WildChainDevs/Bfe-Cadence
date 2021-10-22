@@ -8,5 +8,6 @@ pub fun main(account: Address, nftId: UInt64) : {String : String} {
     let receiverRef = capability.borrow<&{BfeNFT.NFTReceiver}>()
         ?? panic("Could not borrow the receiver reference")
 
-    return receiverRef.getMetadata(id: nftId)
+    let borrowedNft = receiverRef.borrowBfeNFT(id: nftId)!
+    return borrowedNft.metadata
 }
