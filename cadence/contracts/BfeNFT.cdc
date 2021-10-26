@@ -4,6 +4,8 @@ import NonFungibleToken from "./NonFungibleToken.cdc"
 
 pub contract BfeNFT: NonFungibleToken {
 
+    // Events
+    //
     pub event NFTMinted(id: UInt64)
 
     pub event ContractInitialized()
@@ -14,12 +16,22 @@ pub contract BfeNFT: NonFungibleToken {
 
     pub var totalSupply: UInt64
 
+    // Named Paths
+    //
+    pub let CollectionStoragePath: StoragePath
+    pub let CollectionPublicPath: PublicPath
+    pub let MinterStoragePath: StoragePath
+
     // Declare the NFT resource type
     pub resource NFT: NonFungibleToken.INFT {
         // The unique ID that differentiates each NFT
         pub let id: UInt64
 
-        pub let metadata: {String : String}
+        access(self) let metadata: {String : String}
+
+        pub fun getMetadata(): {String : String}{
+            return self.metadata
+        }
 
         // Initialize fields in the init function
         init(initID: UInt64, initMetadata: {String : String} ) {
@@ -183,14 +195,18 @@ pub contract BfeNFT: NonFungibleToken {
         // Initialize the total supply
         self.totalSupply = 0
 
+        self.CollectionStoragePath = /storage/BfeNFTcollection
+        self.CollectionPublicPath = /public/BfeNFTreceiver
+        self.MinterStoragePath = /storage/BfeNFTminter
+
 		// store an empty NFT Collection in account storage
-        self.account.save(<-self.createEmptyCollection(), to: /storage/BfeNFTcollection)
+        self.account.save(<-self.createEmptyCollection(), to: self.CollectionStoragePath)
 
         // publish a reference to the Collection in storage
-        self.account.link<&{BfeNFT.NFTReceiver}>(/public/BfeNFTreceiver, target: /storage/BfeNFTcollection)
+        self.account.link<&{BfeNFT.NFTReceiver}>(self.CollectionPublicPath, target: self.CollectionStoragePath)
 
         // store a minter resource in account storage
-        self.account.save(<-create NFTMinter(), to: /storage/BfeNFTminter)
+        self.account.save(<-create NFTMinter(), to: self.MinterStoragePath)
 
         emit ContractInitialized()
 

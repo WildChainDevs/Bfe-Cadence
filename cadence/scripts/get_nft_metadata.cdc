@@ -9,5 +9,5 @@ pub fun main(account: Address, nftId: UInt64) : {String : String} {
         ?? panic("Could not borrow the receiver reference")
 
     let borrowedNft = receiverRef.borrowBfeNFT(id: nftId)!
-    return borrowedNft.metadata
+    return borrowedNft.getMetadata()
 }

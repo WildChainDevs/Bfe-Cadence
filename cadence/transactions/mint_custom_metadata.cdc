@@ -11,11 +11,11 @@ transaction(customData: {String : String}) {
     // ...in "prepare", the code borrows capabilities on the two resources referenced above,
     // takes in information of the person executing the tx, and validates.
     prepare(acct: AuthAccount) {
-        self.receiverRef = acct.getCapability<&{BfeNFT.NFTReceiver}>(/public/BfeNFTreceiver)
+        self.receiverRef = acct.getCapability<&{BfeNFT.NFTReceiver}>(BfeNFT.CollectionPublicPath)
             .borrow()
             ?? panic("Could not borrow receiver reference.")
 
-        self.minterRef = acct.borrow<&BfeNFT.NFTMinter>(from: /storage/BfeNFTminter)
+        self.minterRef = acct.borrow<&BfeNFT.NFTMinter>(from: BfeNFT.MinterStoragePath)
             ?? panic("Could not borrow minter reference.")
     }
 

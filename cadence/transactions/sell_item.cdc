@@ -21,7 +21,7 @@ transaction(saleItemID: UInt64, saleItemPrice: UFix64) {
         assert(self.fusdReceiver.borrow() != nil, message: "Missing or mis-typed FUSD receiver")
 
         if !account.getCapability<&BfeNFT.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(BfeCollectionProviderPrivatePath)!.check() {
-            account.link<&BfeNFT.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(BfeCollectionProviderPrivatePath, target: /storage/BfeNFTcollection)
+            account.link<&BfeNFT.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(BfeCollectionProviderPrivatePath, target: BfeNFT.CollectionStoragePath)
         }
 
         self.BfeProvider = account.getCapability<&BfeNFT.Collection{NonFungibleToken.Provider, NonFungibleToken.CollectionPublic}>(BfeCollectionProviderPrivatePath)!
